@@ -4,8 +4,6 @@ import pyvista as pv
 
 from visualtools import visualtools
 
-
-
 def demo_weighted_elecs_projection(make_gif=False):
     '''
     This example plots the grid electrodes from NY717 on the
@@ -70,7 +68,7 @@ def demo_weighted_elecs_projection(make_gif=False):
     vt.flag_use_annot = False
     # set arguments for plottting the colorbar
     scalar_bar_args = dict(font_family='times', fmt='%.1f',
-                           label_font_size=20)
+                           label_font_size=30)
     # use plot_elec_on_pial function from visualtools to plot the elecs
     # ElecColor input can be set to elec_weights to color each electrode
     # proportional to the weight value
@@ -106,7 +104,7 @@ def demo_weighted_elecs_projection(make_gif=False):
                              regions=elec_regions,
                              sigma = 3.0,
                              plotter=pl,
-                             mode="simple",
+                             mode="normalize",
                              cmap='hot_r',
                              clim=(0,1),
                              show=False)
@@ -126,7 +124,7 @@ def demo_weighted_elecs_projection(make_gif=False):
                              regions=elec_regions,
                              sigma = 3.0,
                              plotter=pl,
-                             mode="simple",
+                             mode="normalize",
                              cmap='hot_r',
                              clim=(0,1),
                              show=False)
@@ -136,6 +134,9 @@ def demo_weighted_elecs_projection(make_gif=False):
     pl.link_views()
     # show the results
     cpos = pl.show(return_cpos=True, auto_close=False)
+    filename = f"NY717.png"
+    pl.screenshot(filename)
+    print(f"Saved {filename}")
     if make_gif:
         ## create a gif of the results
         pl.camera_position = cpos
@@ -153,7 +154,3 @@ def demo_weighted_elecs_projection(make_gif=False):
 
 if __name__ == "__main__":
     demo_weighted_elecs_projection(make_gif=False)
-    quit()
-    demo_elec_project_mni()
-    demo_plot_brain_pial()
-    demo_elces_on_subject_brain()

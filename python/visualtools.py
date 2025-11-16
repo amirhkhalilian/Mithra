@@ -5,10 +5,12 @@ import scipy.io
 import scipy.spatial as scp
 from nibabel.freesurfer.io import read_annot
 from nibabel.freesurfer.io import read_geometry
+from nibabel.freesurfer.io import read_morph_data
 from matplotlib import pyplot as plt
+from matplotlib import cm
 
 import pyvista as pv
-pv.set_plot_theme('dark')
+pv.set_plot_theme('document')
 
 class visualtools(object):
     """
@@ -62,6 +64,31 @@ class visualtools(object):
         else:
             raise ValueError(f'file extension {ext} not valid!')
         return verts, faces
+
+    @staticmethod
+    def morph_to_color(morph, alpha=1.0):
+        color = np.zeros((len(morph), 4))
+        color[morph >= 0, :3] = [0.7, 0.7, 0.7]
+        color[morph < 0, :3] = [0.85, 0.85, 0.85]
+        color[:, 3:] = alpha
+        return color
+
+    @staticmethod
+    def _get_inflated_from_file(brain_file, morph_file=None):
+        '''
+        load the inflated brain file and the colors from morph
+        '''
+        dl = read_geometry(brain_file)
+        verts = np.array(dl[0])
+        faces = np.hstack((3*np.ones((dl[1].shape[0],1),dtype=np.int32),\
+                           np.array(dl[1])))
+        if morph_file is not None:
+            curv = read_morph_data(morph_file)
+            color = visualtools.morph_to_color(curv)
+            return verts, faces, color
+        color = np.ones([verts.shape[0],4])
+        color[:,:3] *= 0.5
+        return verts, faces, color
 
     def _get_trisurf(self):
         '''
@@ -183,7 +210,8 @@ class visualtools(object):
                           flag_smooth = False,
                           smooth_iter = 10,
                           plotter = None,
-                          flag_return_verts = False):
+                          flag_return_verts = False,
+                          opacity = 1.0):
         '''
         function to plot a Brain pial surface
         '''
@@ -208,12 +236,47 @@ class visualtools(object):
                         rgb = True,
                         use_transparency=True,
                         smooth_shading=True,
-                        opacity=0.0)
+                        opacity=1.0 - opacity)
         else:
             pl.add_mesh(surf, color=brain_color,
                         use_transparency=True,
                         smooth_shading=True,
                         opacity=1.0-brain_color[3])
+        if self.hemi=='lh':
+            pl.camera_position = 'yz'
+            pl.camera.azimuth = 180
+        elif self.hemi=='rh':
+            pl.camera_position = 'yz'
+        if flag_return_verts:
+            return pl, verts
+        else:
+            return pl
+
+    def plot_inflated_surf(self,
+                           morph_file=None,
+                           flag_smooth = False,
+                           smooth_iter = 10,
+                           plotter = None,
+                           flag_return_verts = False):
+        '''
+        function to plot a Brain pial surface
+        '''
+        verts, faces, brain_color = self._get_inflated_from_file(self.brain_file,
+                                                                 morph_file)
+        # convert brain faces and verts to PolyData in pyvista
+        surf = pv.PolyData(verts, faces)
+        if flag_smooth:
+            surf = surf.smooth(n_iter=smooth_iter)
+        # plot the poly data using
+        if plotter is None:
+            pl = pv.Plotter()
+        else:
+            pl = plotter
+        pl.add_mesh(surf, scalars=brain_color,
+                    rgb = True,
+                    use_transparency=True,
+                    smooth_shading=True,
+                    opacity=0.0)
         if self.hemi=='lh':
             pl.camera_position = 'yz'
             pl.camera.azimuth = 180
@@ -313,6 +376,7 @@ class visualtools(object):
                               tol = 1e-3,
                               cmap = 'coolwarm',
                               clim = None,
+                              flag_scalar_bar = True,
                               plotter = None,
                               scalar_bar_args=None,
                               show=True):
@@ -353,7 +417,9 @@ class visualtools(object):
             # Accumulate weights into the surface values
             color_values[valid_indices] += weights[el] * _gauss
             if mode=="normalize":
-                norm_values[valid_indices] += _gauss
+                dist_all = np.linalg.norm(verts - elec, axis=1)
+                _gauss = np.exp(-0.5 * (dist_all / sigma)**2)
+                norm_values += _gauss
 
         if mode=="normalize": # normalize the color_values
             color_values /= norm_values
@@ -374,7 +440,8 @@ class visualtools(object):
                     cmap=cmap, clim=clim, smooth_shading=True,\
                     show_scalar_bar=False)
 
-        pl.add_scalar_bar(**scalar_bar_args)
+        if flag_scalar_bar:
+            pl.add_scalar_bar(**scalar_bar_args)
 
         if self.hemi=='lh':
             pl.camera_position = 'yz'

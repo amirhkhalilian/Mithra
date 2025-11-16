@@ -1,0 +1,130 @@
+AHC01 -18.000000 3.000000 -31.000000 66.67% Left-Cerebral-White-Matter 33.33% ctx-lh-parahippocampal 
+AHC02 -21.384615 3.230769 -30.230769 70.37% Left-Cerebral-White-Matter 11.11% Left-Hippocampus 18.52% ctx-lh-parahippocampal 
+AHC03 -24.769231 3.461538 -29.461538 66.67% Left-Cerebral-White-Matter 33.33% Left-Hippocampus 
+AHC04 -28.153846 3.692308 -28.692308 59.26% Left-Cerebral-White-Matter 37.04% Left-Hippocampus 3.70% ctx-lh-parahippocampal 
+AHC05 -31.538462 3.923077 -27.923077 100.00% Left-Cerebral-White-Matter 
+AHC06 -34.923077 4.153846 -27.153846 100.00% Left-Cerebral-White-Matter 
+AHC07 -38.307692 4.384615 -26.384615 100.00% Left-Cerebral-White-Matter 
+AHC08 -41.692308 4.615385 -25.615385 100.00% Left-Cerebral-White-Matter 
+AHC09 -45.076923 4.846154 -24.846154 96.30% Left-Cerebral-White-Matter 3.70% ctx-lh-middletemporal 
+AHC10 -48.461538 5.076923 -24.076923 81.48% Left-Cerebral-White-Matter 18.52% ctx-lh-middletemporal 
+AHC11 -51.846154 5.307692 -23.307692 70.37% Left-Cerebral-White-Matter 29.63% ctx-lh-middletemporal 
+AHC12 -55.230769 5.538462 -22.538462 81.48% Left-Cerebral-White-Matter 18.52% ctx-lh-middletemporal 
+AHC13 -58.615385 5.769231 -21.769231 59.26% Left-Cerebral-White-Matter 40.74% ctx-lh-middletemporal 
+AHC14 -62.000000 6.000000 -21.000000 18.52% Unknown 81.48% ctx-lh-middletemporal 
+AMNAN -15.000000 11.000000 -27.000000 100.00% Left-Hippocampus 
+AMNAN -18.000000 12.000000 -27.000000 100.00% Left-Hippocampus 
+AMNAN -21.000000 12.000000 -27.000000 100.00% Left-Hippocampus 
+AMNAN -25.000000 13.000000 -27.000000 7.41% Left-Inf-Lat-Vent 62.96% Left-Hippocampus 29.63% Left-Amygdala 
+AMNAN -29.000000 13.000000 -27.000000 88.89% Left-Cerebral-White-Matter 11.11% Left-Inf-Lat-Vent 
+AMNAN -32.000000 14.000000 -26.000000 100.00% Left-Cerebral-White-Matter 
+AMNAN -35.000000 15.000000 -26.000000 100.00% Left-Cerebral-White-Matter 
+AMNAN -39.000000 16.000000 -26.000000 100.00% Left-Cerebral-White-Matter 
+AMNAN -42.000000 17.000000 -26.000000 100.00% Left-Cerebral-White-Matter 
+AMNAN -46.000000 17.000000 -26.000000 62.96% Left-Cerebral-White-Matter 37.04% ctx-lh-middletemporal 
+AMNAN -49.000000 18.000000 -26.000000 33.33% Left-Cerebral-White-Matter 66.67% ctx-lh-middletemporal 
+AMNAN -53.000000 18.000000 -25.000000 37.04% Unknown 62.96% ctx-lh-middletemporal 
+AMNAN -56.000000 20.000000 -25.000000 77.78% Unknown 22.22% ctx-lh-middletemporal 
+IBT01 -18.000000 18.000000 -35.000000 59.26% Left-Cerebral-White-Matter 11.11% Left-Amygdala 29.63% ctx-lh-entorhinal 
+IBT02 -21.300000 18.500000 -34.300000 77.78% Left-Cerebral-White-Matter 22.22% Left-Amygdala 
+IBT03 -24.600000 19.000000 -33.600000 81.48% Left-Cerebral-White-Matter 18.52% Left-Amygdala 
+IBT04 -27.900000 19.500000 -32.900000 92.59% Left-Cerebral-White-Matter 7.41% Left-Amygdala 
+IBT05 -31.200000 20.000000 -32.200000 100.00% Left-Cerebral-White-Matter 
+IBT06 -34.500000 20.500000 -31.500000 100.00% Left-Cerebral-White-Matter 
+IBT07 -37.800000 21.000000 -30.800000 100.00% Left-Cerebral-White-Matter 
+IBT08 -41.100000 21.500000 -30.100000 62.96% Left-Cerebral-White-Matter 25.93% ctx-lh-middletemporal 11.11% ctx-lh-superiortemporal 
+IBT09 -44.400000 22.000000 -29.400000 7.41% Unknown 37.04% Left-Cerebral-White-Matter 55.56% ctx-lh-middletemporal 
+IBT10 -47.700000 22.500000 -28.700000 3.70% Unknown 29.63% Left-Cerebral-White-Matter 66.67% ctx-lh-middletemporal 
+IBT11 -51.000000 23.000000 -28.000000 29.63% Left-Cerebral-White-Matter 70.37% ctx-lh-middletemporal 
+ISC01 -6.000000 45.000000 -9.000000 88.89% Left-Cerebral-White-Matter 11.11% ctx-lh-medialorbitofrontal 
+ISC02 -9.000000 44.000000 -9.000000 100.00% Left-Cerebral-White-Matter 
+ISC03 -13.000000 45.000000 -8.000000 100.00% Left-Cerebral-White-Matter 
+ISC04 -16.000000 45.000000 -7.000000 100.00% Left-Cerebral-White-Matter 
+ISC05 -20.000000 45.000000 -7.000000 100.00% Left-Cerebral-White-Matter 
+ISC06 -23.000000 45.000000 -6.000000 100.00% Left-Cerebral-White-Matter 
+ISC07 -27.000000 46.000000 -5.000000 62.96% Left-Cerebral-White-Matter 37.04% ctx-lh-lateralorbitofrontal 
+ISC08 -30.000000 46.000000 -4.000000 100.00% ctx-lh-lateralorbitofrontal 
+ISC09 -34.000000 46.000000 -4.000000 40.74% Left-Cerebral-White-Matter 3.70% ctx-lh-lateralorbitofrontal 55.56% ctx-lh-parstriangularis 
+ISC10 -37.000000 46.000000 -3.000000 100.00% Left-Cerebral-White-Matter 
+ISC11 -40.000000 46.000000 -2.000000 100.00% Left-Cerebral-White-Matter 
+ISC12 -44.000000 46.000000 -2.000000 88.89% Left-Cerebral-White-Matter 11.11% ctx-lh-parstriangularis 
+ISC13 -47.000000 46.000000 -1.000000 85.19% Left-Cerebral-White-Matter 14.81% ctx-lh-parstriangularis 
+ISC14 -51.000000 46.000000 -0.000000 81.48% Left-Cerebral-White-Matter 18.52% ctx-lh-parstriangularis 
+ISC15 -54.000000 47.000000 1.000000 100.00% ctx-lh-parstriangularis 
+ME01 -30.000000 32.000000 -39.000000 11.11% Left-Cerebral-White-Matter 59.26% ctx-lh-inferiortemporal 29.63% ctx-lh-middletemporal 
+ME02 -32.571429 32.428571 -36.857143 100.00% Left-Cerebral-White-Matter 
+ME03 -35.142857 32.857143 -34.714286 37.04% Left-Cerebral-White-Matter 51.85% ctx-lh-middletemporal 3.70% ctx-lh-superiortemporal 
+ME04 -37.714286 33.285714 -32.571429 11.11% Unknown 22.22% Left-Cerebral-White-Matter 3.70% ctx-lh-middletemporal 62.96% ctx-lh-superiortemporal 
+ME05 -40.285714 33.714286 -30.428571 51.85% Left-Cerebral-White-Matter 25.93% ctx-lh-superiortemporal 
+ME06 -42.857143 34.142857 -28.285714 44.44% Left-Cerebral-White-Matter 48.15% ctx-lh-superiortemporal 
+ME07 -45.428571 34.571429 -26.142857 14.81% Left-Cerebral-White-Matter 55.56% ctx-lh-superiortemporal 
+ME08 -48.000000 35.000000 -24.000000 7.41% Unknown 62.96% ctx-lh-superiortemporal 
+OF01 -14.000000 63.000000 -14.000000 77.78% Left-Cerebral-White-Matter 22.22% ctx-lh-lateralorbitofrontal 
+OF02 -15.437500 62.187500 -10.937500 100.00% Left-Cerebral-White-Matter 
+OF03 -16.875000 61.375000 -7.875000 100.00% Left-Cerebral-White-Matter 
+OF04 -18.312500 60.562500 -4.812500 100.00% Left-Cerebral-White-Matter 
+OF05 -19.750000 59.750000 -1.750000 100.00% Left-Cerebral-White-Matter 
+OF06 -21.187500 58.937500 1.312500 100.00% Left-Cerebral-White-Matter 
+OF07 -22.625000 58.125000 4.375000 100.00% Left-Cerebral-White-Matter 
+OF08 -24.062500 57.312500 7.437500 100.00% Left-Cerebral-White-Matter 
+OF09 -25.500000 56.500000 10.500000 100.00% Left-Cerebral-White-Matter 
+OF10 -26.937500 55.687500 13.562500 100.00% Left-Cerebral-White-Matter 
+OF11 -28.375000 54.875000 16.625000 66.67% Left-Cerebral-White-Matter 33.33% ctx-lh-rostralmiddlefrontal 
+OF12 -29.812500 54.062500 19.687500 3.70% Unknown 25.93% Left-Cerebral-White-Matter 70.37% ctx-lh-rostralmiddlefrontal 
+OF13 -31.250000 53.250000 22.750000 88.89% Left-Cerebral-White-Matter 11.11% ctx-lh-rostralmiddlefrontal 
+OF14 -32.687500 52.437500 25.812500 25.93% Left-Cerebral-White-Matter 74.07% ctx-lh-rostralmiddlefrontal 
+OF15 -34.125000 51.625000 28.875000 48.15% Unknown 51.85% ctx-lh-rostralmiddlefrontal 
+OF16 -35.562500 50.812500 31.937500 14.81% Left-Cerebral-White-Matter 85.19% ctx-lh-rostralmiddlefrontal 
+OF17 -37.000000 50.000000 35.000000 25.93% Unknown 74.07% ctx-lh-rostralmiddlefrontal 
+PHC01 -26.000000 -1.000000 -22.000000 100.00% Left-Hippocampus 
+PHC02 -29.166667 -2.083333 -21.000000 3.70% Left-Cerebral-White-Matter 96.30% Left-Hippocampus 
+PHC03 -32.333333 -3.166667 -20.000000 77.78% Left-Cerebral-White-Matter 22.22% Left-Hippocampus 
+PHC04 -35.500000 -4.250000 -19.000000 100.00% Left-Cerebral-White-Matter 
+PHC05 -38.666667 -5.333333 -18.000000 100.00% Left-Cerebral-White-Matter 
+PHC06 -41.833333 -6.416667 -17.000000 18.52% Unknown 25.93% ctx-lh-middletemporal 55.56% ctx-lh-superiortemporal 
+PHC07 -45.000000 -7.500000 -16.000000 3.70% Unknown 96.30% ctx-lh-superiortemporal 
+PHC08 -48.166667 -8.583333 -15.000000 11.11% Left-Cerebral-White-Matter 88.89% ctx-lh-superiortemporal 
+PHC09 -51.333333 -9.666667 -14.000000 29.63% Left-Cerebral-White-Matter 70.37% ctx-lh-superiortemporal 
+PHC10 -54.500000 -10.750000 -13.000000 55.56% Left-Cerebral-White-Matter 44.44% ctx-lh-superiortemporal 
+PHC11 -57.666667 -11.833333 -12.000000 74.07% Left-Cerebral-White-Matter 25.93% ctx-lh-superiortemporal 
+PHC12 -60.833333 -12.916667 -11.000000 66.67% Left-Cerebral-White-Matter 33.33% ctx-lh-superiortemporal 
+PHC13 -64.000000 -14.000000 -10.000000 3.70% Left-Cerebral-White-Matter 96.30% ctx-lh-superiortemporal 
+SAI01 -40.000000 31.000000 -11.000000 25.93% Unknown 11.11% ctx-lh-parsopercularis 62.96% ctx-lh-insula 
+SAI02 -43.333333 30.000000 -11.166667 55.56% Unknown 44.44% ctx-lh-parsopercularis 
+SAI03 -46.666667 29.000000 -11.333333 59.26% Unknown 37.04% ctx-lh-parsopercularis 3.70% ctx-lh-superiortemporal 
+SAI04 -50.000000 28.000000 -11.500000 22.22% Unknown 18.52% ctx-lh-parsopercularis 59.26% ctx-lh-superiortemporal 
+SAI05 -53.333333 27.000000 -11.666667 3.70% Unknown 96.30% ctx-lh-superiortemporal 
+SAI06 -56.666667 26.000000 -11.833333 3.70% Unknown 96.30% ctx-lh-superiortemporal 
+SAI07 -60.000000 25.000000 -12.000000 92.59% Unknown 7.41% ctx-lh-superiortemporal 
+SPI01 -36.000000 0.000000 -2.000000 18.52% Left-Cerebral-White-Matter 59.26% ctx-lh-insula 
+SPI02 -38.888889 -1.777778 -2.555556 40.74% ctx-lh-transversetemporal 59.26% ctx-lh-insula 
+SPI03 -41.777778 -3.555556 -3.111111 51.85% Left-Cerebral-White-Matter 48.15% ctx-lh-transversetemporal 
+SPI04 -44.666667 -5.333333 -3.666667 18.52% Unknown 3.70% ctx-lh-superiortemporal 77.78% ctx-lh-transversetemporal 
+SPI05 -47.555556 -7.111111 -4.222222 11.11% Unknown 3.70% Left-Cerebral-White-Matter 85.19% ctx-lh-superiortemporal 
+SPI06 -50.444444 -8.888889 -4.777778 11.11% Unknown 88.89% ctx-lh-superiortemporal 
+SPI07 -53.333333 -10.666667 -5.333333 55.56% Unknown 44.44% ctx-lh-superiortemporal 
+SPI08 -56.222222 -12.444444 -5.888889 18.52% Left-Cerebral-White-Matter 81.48% ctx-lh-superiortemporal 
+SPI09 -59.111111 -14.222222 -6.444444 66.67% Left-Cerebral-White-Matter 33.33% ctx-lh-superiortemporal 
+SPI10 -62.000000 -16.000000 -7.000000 85.19% Left-Cerebral-White-Matter 14.81% ctx-lh-superiortemporal 
+STP01 -20.000000 27.000000 -54.000000 88.89% Unknown 11.11% ctx-lh-fusiform 
+STP02 -22.636364 27.636364 -51.363636 11.11% Unknown 48.15% ctx-lh-fusiform 40.74% ctx-lh-inferiortemporal 
+STP03 -25.272727 28.272727 -48.727273 18.52% Left-Cerebral-White-Matter 70.37% ctx-lh-inferiortemporal 
+STP04 -27.909091 28.909091 -46.090909 59.26% Left-Cerebral-White-Matter 40.74% ctx-lh-inferiortemporal 
+STP05 -30.545455 29.545455 -43.454545 29.63% Left-Cerebral-White-Matter 70.37% ctx-lh-inferiortemporal 
+STP06 -33.181818 30.181818 -40.818182 51.85% Left-Cerebral-White-Matter 3.70% ctx-lh-inferiortemporal 33.33% ctx-lh-middletemporal 
+STP07 -35.818182 30.818182 -38.181818 88.89% Left-Cerebral-White-Matter 7.41% WM-hypointensities 3.70% ctx-lh-middletemporal 
+STP08 -38.454545 31.454545 -35.545455 11.11% Unknown 3.70% Left-Cerebral-White-Matter 85.19% ctx-lh-middletemporal 
+STP09 -41.090909 32.090909 -32.909091 33.33% Unknown 55.56% ctx-lh-superiortemporal 
+STP10 -43.727273 32.727273 -30.272727 11.11% Left-Cerebral-White-Matter 88.89% ctx-lh-superiortemporal 
+STP11 -46.363636 33.363636 -27.636364 3.70% Left-Cerebral-White-Matter 96.30% ctx-lh-superiortemporal 
+STP12 -49.000000 34.000000 -25.000000 40.74% Unknown 59.26% ctx-lh-superiortemporal 
+
+% Total number of electrodes 120
+% Number of hippocampus electrodes 10
+% AHC02 AHC03 AHC04 AMNAN AMNAN AMNAN AMNAN PHC01 PHC02 PHC03 
+% Number of entorhinal cortex electrodes 0
+% 
+% Number of insula electrodes 3
+% SAI01 SPI01 SPI02 
+% Number of amygdala electrodes 5
+% AMNAN IBT01 IBT02 IBT03 IBT04 

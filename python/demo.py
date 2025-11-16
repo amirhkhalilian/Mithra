@@ -114,8 +114,7 @@ def demo_elec_project_mni():
                               flag_scalar_bar=False,
                               show=False)
     pl.set_background(color='white')
-    visualtools._save_all_views(pl, 'test')
-    quit()
+    pl.show()
 
 
 def demo_weighted_elecs_projection(make_gif=False):
@@ -250,7 +249,6 @@ def demo_weighted_elecs_projection(make_gif=False):
 
 if __name__ == "__main__":
     demo_weighted_elecs_projection(make_gif=False)
-    quit()
     demo_elec_project_mni()
     demo_plot_brain_pial()
     demo_elces_on_subject_brain()
