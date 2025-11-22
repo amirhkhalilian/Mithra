@@ -1,9 +1,3 @@
-# Mithra: visualize ECoG and sEEG electrodes
-
-This repo implements ECoG and sEEG electrodes visualization tools. The
-implementations are provided in Python and Matlab with similar functionality and
-workflow as much as possible.
-
 # Mithra: A Cross-Platform Toolkit for Intracranial Electrode Visualization
 
 **Mithra** is a unified Python and MATLAB toolkit for visualizing intracranial electrophysiological recordings, including ECoG and sEEG. It enables subject-specific visualization, standardized-space mapping, and systematic within- and across-subject analysis.
