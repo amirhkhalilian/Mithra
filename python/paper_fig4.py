@@ -9,7 +9,7 @@ from visualtools import visualtools
 # form the dataset
 windows = [0, 100, 200, 400]
 dataset = {}
-subj = "NY717"
+subj = "NY742"
 path = f"./sample_data/sample_subjects/{subj}/AudRep"
 for w in windows:
     dl = loadmat(os.path.join(path, f"{subj}_AudRep_{w}msec.mat"))
@@ -38,19 +38,19 @@ z = np.array(csv['fs_coords_3'][se])[:,None]
 elec_coords_fs = np.hstack((x,y,z))
 
 vt = visualtools(subj=subj, hemi='lh',
-                 flag_use_annot=False,
-                 brain_file='./sample_data/sample_subjects/NY717/NY717_pial_surf.mat',
-                 annot_file='./sample_data/sample_subjects/NY717/NY717_lh_aparc.annot')
+                 flag_use_annot=True,
+                 brain_file=f'./sample_data/sample_subjects/{subj}/{subj}_pial_surf.mat',
+                 annot_file=f'./sample_data/sample_subjects/{subj}/{subj}_lh_aparc.annot')
 
 vt_mni = visualtools(subj='MNI_FSL', hemi='lh',
-                 flag_use_annot=False,
+                 flag_use_annot=True,
                  brain_file='./sample_data/MNI_FSL152/FSL_MNI152_lh_pial.mat',
                  annot_file='./sample_data/MNI_FSL152/FSL_MNI152.lh.aparc.split_STG_MTG.annot')
 elec_coords_mni, _ = vt_mni.project_elec_verts(elec_coords_mni,
                                                regions = elec_regions)
 
 vt_fs = visualtools(subj='fsaverge', hemi='lh',
-                 flag_use_annot=False,
+                 flag_use_annot=True,
                  brain_file='./sample_data/fsaverage/lh.pial',
                  annot_file='./sample_data/fsaverage/lh.aparc.split_STG_MTG.annot')
 
@@ -67,7 +67,7 @@ for i, w in enumerate(windows):
                                    sigma = 3.0,
                                    plotter=pl,
                                    flag_scalar_bar = False,
-                                   mode="simple",
+                                   mode="normalize",
                                    cmap='hot_r',
                                    clim=(0,2),
                                    show=False)
@@ -89,7 +89,7 @@ for i, w in enumerate(windows):
                                        regions=elec_regions,
                                        sigma = 3.0,
                                        plotter=pl,
-                                       mode="simple",
+                                       mode="normalize",
                                        cmap='hot_r',
                                        flag_scalar_bar = False,
                                        clim=(0,2),
