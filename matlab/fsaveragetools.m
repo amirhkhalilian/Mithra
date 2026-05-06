@@ -85,7 +85,7 @@ classdef fsaveragetools
                  str = sprintf('could not open curvature file %s', fname) ;
                  error(str) ;
             end
-            vnum = fread3(fid) ;
+            vnum = fsaveragetools.fread3(fid) ;
             NEW_VERSION_MAGIC_NUMBER = 16777215;
             if (vnum == NEW_VERSION_MAGIC_NUMBER)
               vnum = fread(fid, 1, 'int32') ;
@@ -94,7 +94,7 @@ classdef fsaveragetools
               curv = fread(fid, vnum, 'float') ; 
               fclose(fid) ;
             else
-              fnum = fread3(fid) ;
+              fnum = fsaveragetools.fread3(fid) ;
               curv = fread(fid, vnum, 'int16') ./ 100 ; 
               fclose(fid) ;
             end
