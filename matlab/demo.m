@@ -4,7 +4,7 @@ clc; clear; close all;
 %% Plot NY717 grid electrodes on the T1 brain surface
 % first we load the "coordinates.csv" file that has electrode
 % location in subject T1 space.
-fn_csv = './SampleData/NY717/coordinates.csv';
+fn_csv = './sample_data/sample_subjects/NY717/coordinates.csv';
 csv = readtable(fn_csv);
 % we select the grid electrodes 
 se = 1:128; % first 128 electrodes are grid
@@ -12,7 +12,7 @@ se = 1:128; % first 128 electrodes are grid
 elec_coords = table2array(csv(se,6:8)); % 6:8 is for T1... matrix of size 128x3
 % create a visualization object
 VT = visualtools('Subj', 'NY717', 'HS', 'lh',...
-                 'BrainFile', './SampleData/NY717/NY717_pial_surf.mat',...
+                 'BrainFile', './sample_data/sample_subjects/NY717/NY717_pial_surf.mat',...
                  'AnnotFile', []);
 % plot electrodes on the brain
 VT.PlotElecOnBrain(elec_coords, 'ElecColor',[1.0,0.0,0.0],...
@@ -21,7 +21,7 @@ VT.PlotElecOnBrain(elec_coords, 'ElecColor',[1.0,0.0,0.0],...
 %% Plot NY717 grid electrodes on the MNI brain surface
 % first we load the "coordinates.csv" file that has electrode
 % location in subject T1 space.
-fn_csv = './SampleData/NY717/coordinates.csv';
+fn_csv = './sample_data/sample_subjects/NY717/coordinates.csv';
 csv = readtable(fn_csv);
 % we select the grid electrodes 
 se = 1:128; % first 128 electrodes are grid
@@ -29,8 +29,8 @@ se = 1:128; % first 128 electrodes are grid
 elec_coords = table2array(csv(se,2:4)); % 2:4 is for MNI... matrix of size 128x3
 VT = visualtools('Subj', 'MNI-FS', 'HS', 'lh',...
                  'flag_UseAnnots', true,...
-                 'BrainFile','./SampleData/MNI-FS/FSL_MNI152_lh_pial.mat',...
-                 'AnnotFile','./SampleData/MNI-FS/FSL_MNI152.lh.aparc.split_STG_MTG.annot');
+                 'BrainFile','./sample_data/MNI_FSL152/FSL_MNI152_lh_pial.mat',...
+                 'AnnotFile','./sample_data/MNI_FSL152/FSL_MNI152.lh.aparc.split_STG_MTG.annot');
 % plot electrodes on the brain
 VT.PlotElecOnBrain(elec_coords, 'ElecColor', [0.0,0.0,0.0],...
                    'radius',1.0);
@@ -44,7 +44,7 @@ VT.PlotElecOnBrain(elec_coords, 'ElecColor', [0.0,0.0,0.0],...
 % we assign random weights to only mSTG electrodes.
 
 % load T1 coordinates
-fn_csv = './SampleData/NY717/coordinates.csv';
+fn_csv = './sample_data/sample_subjects/NY717/coordinates.csv';
 csv = readtable(fn_csv);
 % we select the grid electrodes 
 se = [1:128]'; % first 128 electrodes are grid
@@ -64,8 +64,8 @@ elec_weights(mSTG_inds) = rand(size(mSTG_inds));
 VT = visualtools('Subj', 'NY717', 'HS', 'lh',...
                  'flag_UseAnnots', true,...
                  'flag_MergeSTG', false,...
-                 'BrainFile', './SampleData/NY717/NY717_pial_surf.mat',...
-                 'AnnotFile', './SampleData/NY717/NY717_lh_aparc.annot');
+                 'BrainFile', './sample_data/sample_subjects/NY717/NY717_pial_surf.mat',...
+                 'AnnotFile', './sample_data/sample_subjects/NY717/NY717_lh_aparc.annot');
 % new figure
 SCR_SZ = get(0, 'Screensize');
 fig = figure('Position',SCR_SZ);
@@ -113,7 +113,7 @@ linkprop([ax1,ax2,ax3,ax4], {'CameraUpVector', 'CameraPosition', 'CameraTarget'}
 % and plot on the fs-average brain
 
 % load T1 coordinates
-fn_csv = './SampleData/NY717/coordinates.csv';
+fn_csv = './sample_data/sample_subjects/NY717/coordinates.csv';
 csv = readtable(fn_csv);
 % we select the grid electrodes 
 se = [1:128]'; % first 128 electrodes are grid
@@ -123,10 +123,10 @@ elec_coords = table2array(csv(se,6:8)); % 6:8 is for T1... matrix of size 128x3
 % get an fs-average tools object to convert T1 coords
 % to fs-average
 FST = fsaveragetools('HS', 'lh',...
-                     'fn_fsaverage_pial', './SampleData/fsaverage/lh.pial',...
-                     'fn_fsaverage_sphere', './SampleData/fsaverage/lh.sphere.reg',...
-                     'fn_subj_pial', './SampleData/NY717/NY717.lh.pial',...
-                     'fn_subj_sphere', './SampleData/NY717/NY717.lh.sphere.reg');
+                     'fn_fsaverage_pial', './sample_data/fsaverage/lh.pial',...
+                     'fn_fsaverage_sphere', './sample_data/fsaverage/lh.sphere.reg',...
+                     'fn_subj_pial', './sample_data/sample_subjects/NY717/NY717.lh.pial',...
+                     'fn_subj_sphere', './sample_data/sample_subjects/NY717/NY717.lh.sphere.reg');
 fs_elec_coords = FST.convert_T1_to_fsaverage(elec_coords);
 
 % new figure
@@ -136,8 +136,8 @@ fig = figure('Position',SCR_SZ);
 % create a visualization object for subject surface
 VT = visualtools('Subj', 'NY717', 'HS', 'lh',...
                  'flag_UseAnnots', true,...
-                 'BrainFile', './SampleData/NY717/NY717_pial_surf.mat',...
-                 'AnnotFile', './SampleData/NY717/NY717_lh_aparc.annot');
+                 'BrainFile', './sample_data/sample_subjects/NY717/NY717_pial_surf.mat',...
+                 'AnnotFile', './sample_data/sample_subjects/NY717/NY717_lh_aparc.annot');
 ax1 = subplot(1,2,1);
 VT.PlotElecOnBrain(elec_coords, 'ElecColor', [1.0,1.0,1.0],...
                    'flag_AddFigure', false, 'radius',1.0);
@@ -146,8 +146,8 @@ title('Elecs on Subj Brain');
 % create a visualization object for fs-average surface
 VT2 = visualtools('Subj', 'fs-average', 'HS', 'lh',...
                  'flag_UseAnnots', true,...
-                 'BrainFile', './SampleData/fsaverage/lh.pial',...
-                 'AnnotFile', './SampleData/fsaverage/lh.aparc.annot');
+                 'BrainFile', './sample_data/fsaverage/lh.pial',...
+                 'AnnotFile', './sample_data/fsaverage/lh.aparc.annot');
 ax2 = subplot(1,2,2);
 VT2.PlotElecOnBrain(fs_elec_coords, 'ElecColor', [1.0,1.0,1.0],...
                    'flag_AddFigure', false, 'radius',1.0);
@@ -159,7 +159,7 @@ linkprop([ax1,ax2], {'CameraUpVector', 'CameraPosition', 'CameraTarget'});
 %% Plot NY717 grid electrodes on the T1 brain surface with random connectivity 
 % first we load the "coordinates.csv" file that has electrode
 % location in subject T1 space.
-fn_csv = './SampleData/NY717/coordinates.csv';
+fn_csv = './sample_data/sample_subjects/NY717/coordinates.csv';
 csv = readtable(fn_csv);
 % we select the grid electrodes 
 se = 1:128; % first 128 electrodes are grid
@@ -189,14 +189,14 @@ Adj(128,3) = 1;
 
 % create a visualization object
 VT = visualtools('Subj', 'NY717', 'HS', 'lh',...
-                 'BrainFile', './SampleData/NY717/NY717_pial_surf.mat',...
+                 'BrainFile', './sample_data/sample_subjects/NY717/NY717_pial_surf.mat',...
                  'AnnotFile', []);
 % plot connectivity on the brain
 VT.PlotElecConnectivityOnBrain(elec_coords, Adj, 'ElecColor',[0.0,0.0,0.0],...
                    'radius',1.0);
 
 %% Projecting the electrodes on the pial surface with closest vert on same area
-fn_csv = './SampleData/NY717/coordinates.csv';
+fn_csv = './sample_data/sample_subjects/NY717/coordinates.csv';
 csv = readtable(fn_csv);
 % we select the grid electrodes
 se = 1:128; % first 128 electrodes are grid
@@ -204,8 +204,8 @@ se = 1:128; % first 128 electrodes are grid
 elec_locs = table2array(csv(se,2:4)); % 2:4 is for MNI... matrix of size 128x3
 elec_regions = csv{se,11};
 
-AnnotFile='./SampleData/MNI/ch2_template.lh.aparc.split_STG_MTG.annot';
-BrainFile='./SampleData/MNI/ch2_template_lh_pial_120519.mat';
+AnnotFile='./sample_data/MNI_canonical/ch2_template.lh.aparc.split_STG_MTG.annot';
+BrainFile='./sample_data/MNI_canonical/ch2_template_lh_pial_120519.mat';
 
 [elec_locs_proj, elec_rgb] = project_elecs_pial(elec_locs, elec_regions, BrainFile, AnnotFile);
 
@@ -226,8 +226,8 @@ VT.PlotElecOnBrain(elec_locs_proj, 'ElecColor', elec_rgb,...
 % define visualization tools
 VT = visualtools('Subj', 'MNI-FS', 'HS', 'lh',...
                  'flag_UseAnnots', true,...
-                 'BrainFile','./SampleData/MNI-FS/FSL_MNI152_lh_pial.mat',...
-                 'AnnotFile','./SampleData/MNI-FS/FSL_MNI152.lh.aparc.split_STG_MTG.annot');
+                 'BrainFile','./sample_data/MNI_FSL152/FSL_MNI152_lh_pial.mat',...
+                 'AnnotFile','./sample_data/MNI_FSL152/FSL_MNI152.lh.aparc.split_STG_MTG.annot');
 % select name of areas you want
 area_names = {'cSTG', 'precentral', 'parsopercularis', 'rostralmiddlefrontal'};
 area_colors = [1 0 0;
@@ -239,12 +239,12 @@ VT.PlotRoIonSurface(area_names, area_colors);
 
 %% Plotting freesurfer inflated brain
 
-[sulc, ~] = fsaveragetools.read_curv( './SampleData/fsaverage/rh.curv');
+[sulc, ~] = fsaveragetools.read_curv( './sample_data/fsaverage/rh.curv');
 % create a visualization object for fs-average surface
 VT2 = visualtools('Subj', 'fs-average', 'HS', 'rh',...
                  'flag_UseAnnots', false,...
-                 'BrainFile', './SampleData/fsaverage/rh.inflated',...
-                 'AnnotFile', './SampleData/fsaverage/rh.aparc.annot');
+                 'BrainFile', './sample_data/fsaverage/rh.inflated',...
+                 'AnnotFile', './sample_data/fsaverage/rh.aparc.annot');
 %set color
 color = zeros(length(sulc),3);
 color(sulc>=0,:) = repmat([0.4,0.4,0.4], sum(sulc>=0),1);
@@ -262,7 +262,7 @@ VT = visualtools('Subj', 'MNI-FS', 'HS', 'lh',...
                  'flag_UseAnnots', false,...
                  'BrainFile',[]);
 for i = 1:length(names)
-    VT.BrainFile = fullfile('./SampleData/MNI-FS/', [names{i},'.mat']);
+    VT.BrainFile = fullfile('./sample_data/MNI_FSL152/', [names{i},'.mat']);
     VT.PlotBrainSurface('flag_AddFigure', false,...
                         'BrainColor', colors{i},...
                         'FaceAlpha', 1.0);
