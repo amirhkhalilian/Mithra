@@ -9,9 +9,15 @@ from freesurfer import fsaveragetools
 MNI_COLS = ['MNI_x', 'MNI_y', 'MNI_z']
 T1_COLS = ['T1_x', 'T1_y', 'T1_z']
 FS_COLS = ['fs_x', 'fs_y', 'fs_z']
+# output column -> fsaverage annotation name ({hemi}.{name}.annot)
+ATLASES = {'HCP_region': 'HCP-MMP1',
+           'Schaefer400_17Net': 'Schaefer2018_400Parcels_17Networks_order'}
+# annotation names for unlabeled vertices (medial wall etc.)
+UNLABELED = {'???', 'Background+FreeSurfer_Defined_Medial_Wall'}
 OUT_COLS = ['labels', 'T1_R'] + MNI_COLS + T1_COLS + \
            ['T1_AnatomicalRegion', 'hemi', 'hemi_method'] + FS_COLS + \
-           ['fs_vertex', 'HCP_region', 'dist_to_pial_mm', 'subj_vertex']
+           ['fs_vertex', 'HCP_region', 'Schaefer400_17Net',
+            'Schaefer400_17Net_network', 'dist_to_pial_mm', 'subj_vertex']
 
 
 def load_subject(subj_dir):
@@ -115,26 +121,36 @@ def map_hemi_to_fsaverage(elec_locs, subj_dir, fs_dir, hemi):
     return fst.fs_pial_verts[fs_ind, :], fs_ind, subj_ind, dist
 
 
-def lookup_hcp(fs_ind, hemi, fs_dir, labels=None, subj=''):
+def lookup_annot(fs_ind, hemi, fs_dir, annot_name, labels=None, subj=''):
     '''
-    returns the HCP-MMP1 region name for each fsaverage vertex.
-    unlabeled vertices ('???' or -1) are returned as 'unknown'
-    with a warning.
+    returns the region name in {hemi}.{annot_name}.annot for each
+    fsaverage vertex. unlabeled vertices (-1 or a name in UNLABELED)
+    are returned as 'unknown' with a warning.
     '''
-    annot_ids, _, names = read_annot(os.path.join(fs_dir, f'{hemi}.HCP-MMP1.annot'))
+    annot_ids, _, names = read_annot(os.path.join(fs_dir, f'{hemi}.{annot_name}.annot'))
     names = np.array([n.decode('utf-8') for n in names], dtype=object)
     ids = annot_ids[fs_ind]
     regions = np.where(ids >= 0, names[np.clip(ids, 0, None)], 'unknown')
-    regions = np.where(regions == '???', 'unknown', regions).astype(object)
+    regions = np.where(np.isin(regions, list(UNLABELED)), 'unknown', regions).astype(object)
     unknown = regions == 'unknown'
     if unknown.any():
         who = list(np.asarray(labels)[unknown]) if labels is not None else int(unknown.sum())
         warnings.warn(f'{subj} {hemi}: electrodes mapped to unlabeled '
-                      f'HCP-MMP1 vertices, set to unknown: {who}')
+                      f'{annot_name} vertices, set to unknown: {who}')
     return regions
 
 
-def process_subject(subj_dir, fs_dir, tol=5.0, out_name='coordinates_hcp.csv'):
+def schaefer_network(parcel):
+    '''
+    extracts the network from a Schaefer parcel name,
+    e.g. 17Networks_LH_DefaultA_PFCm_1 -> DefaultA
+    '''
+    if not isinstance(parcel, str) or parcel == 'unknown':
+        return parcel
+    return parcel.split('_')[2]
+
+
+def process_subject(subj_dir, fs_dir, tol=5.0, out_name='coordinates_atlas.csv'):
     '''
     runs the full mapping for one subject and saves the output
     csv next to the input.
@@ -146,7 +162,8 @@ def process_subject(subj_dir, fs_dir, tol=5.0, out_name='coordinates_hcp.csv'):
         df[c] = np.nan
     df['fs_vertex'] = pd.Series(pd.NA, index=df.index, dtype='Int64')
     df['subj_vertex'] = pd.Series(pd.NA, index=df.index, dtype='Int64')
-    df['HCP_region'] = pd.Series(np.nan, index=df.index, dtype=object)
+    for col in ATLASES:
+        df[col] = pd.Series(np.nan, index=df.index, dtype=object)
     for hemi in ['lh', 'rh']:
         m = (df['hemi'] == hemi).to_numpy()
         if not m.any():
@@ -157,14 +174,17 @@ def process_subject(subj_dir, fs_dir, tol=5.0, out_name='coordinates_hcp.csv'):
         df.loc[m, 'fs_vertex'] = fs_ind
         df.loc[m, 'subj_vertex'] = subj_ind
         df.loc[m, 'dist_to_pial_mm'] = dist
-        df.loc[m, 'HCP_region'] = lookup_hcp(fs_ind, hemi, fs_dir,
-                                             labels=df.loc[m, 'labels'], subj=subj)
+        for col, annot_name in ATLASES.items():
+            df.loc[m, col] = lookup_annot(fs_ind, hemi, fs_dir, annot_name,
+                                          labels=df.loc[m, 'labels'], subj=subj)
+    df['Schaefer400_17Net_network'] = df['Schaefer400_17Net'].map(schaefer_network)
     df = df[OUT_COLS]
     fn_out = os.path.join(subj_dir, out_name)
     df.to_csv(fn_out, index=False)
     print(f'{subj}: n={len(df)} lh={np.sum(df["hemi"] == "lh")} '
           f'rh={np.sum(df["hemi"] == "rh")} no_coords={df["hemi"].isna().sum()} '
-          f'unknown={np.sum(df["HCP_region"] == "unknown")} -> {fn_out}')
+          f'unknown_hcp={np.sum(df["HCP_region"] == "unknown")} '
+          f'unknown_schaefer={np.sum(df["Schaefer400_17Net"] == "unknown")} -> {fn_out}')
     return df
 
 
