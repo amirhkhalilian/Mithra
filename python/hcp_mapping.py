@@ -14,33 +14,105 @@ ATLASES = {'HCP_region': 'HCP-MMP1',
            'Schaefer400_17Net': 'Schaefer2018_400Parcels_17Networks_order'}
 # annotation names for unlabeled vertices (medial wall etc.)
 UNLABELED = {'???', 'Background+FreeSurfer_Defined_Medial_Wall'}
-OUT_COLS = ['labels', 'T1_R'] + MNI_COLS + T1_COLS + \
-           ['T1_AnatomicalRegion', 'hemi', 'hemi_method'] + FS_COLS + \
-           ['fs_vertex', 'HCP_region', 'Schaefer400_17Net',
-            'Schaefer400_17Net_network', 'dist_to_pial_mm', 'subj_vertex']
+OUT_COLS = ['labels'] + MNI_COLS + T1_COLS + \
+           ['T1_R', 'AR_Percentage', 'T1_AnatomicalRegion', 'hemi', 'hemi_method'] + \
+           FS_COLS + ['fs_vertex', 'subj_vertex', 'dist_to_pial_mm',
+                      'HCP_region', 'Schaefer400_17Net',
+                      'Schaefer400_17Net_network', 'reason']
+# electrode types by T1_R
+GRID_STRIP = {'G', 'EG', 'S'}
+DEPTH = 'D'
+# min percentage of a depth anatomical label to be used
+CTX_THRESH = 30.0
+# reasons that are mapped to fsaverage
+MAPPED = {'grid_strip', 'depth_cortex'}
 
 
-def load_subject(subj_dir):
+def load_subject(subj_dir, use_last_valid=False):
     '''
-    loads coordinates.csv and last_valid_electrode.txt from subj_dir
-    and keeps the first last_valid_electrode rows.
+    loads coordinates.csv from subj_dir. if use_last_valid, also loads
+    last_valid_electrode.txt and keeps the first last_valid_electrode rows.
     rows without coordinates are kept and flagged in 'valid_coords'.
     '''
     subj = os.path.basename(os.path.normpath(subj_dir))
     df = pd.read_csv(os.path.join(subj_dir, 'coordinates.csv'))
-    with open(os.path.join(subj_dir, 'last_valid_electrode.txt'), 'r') as f:
-        last_valid = int(f.read().strip())
-    if last_valid > len(df):
-        raise ValueError(f'{subj}: last_valid_electrode={last_valid} '
-                         f'but coordinates.csv has {len(df)} rows')
-    df = df.iloc[:last_valid].reset_index(drop=True)
-    # depth electrodes are not expected in the kept rows
-    is_depth = df['labels'].astype(str).str.match(r'[dD]') | (df['T1_R'] == 'D')
-    if is_depth.any():
-        warnings.warn(f'{subj}: possible depth electrodes in kept rows: '
-                      f'{list(df.loc[is_depth, "labels"])}')
+    if use_last_valid:
+        with open(os.path.join(subj_dir, 'last_valid_electrode.txt'), 'r') as f:
+            last_valid = int(f.read().strip())
+        if last_valid > len(df):
+            raise ValueError(f'{subj}: last_valid_electrode={last_valid} '
+                             f'but coordinates.csv has {len(df)} rows')
+        df = df.iloc[:last_valid].reset_index(drop=True)
     df['valid_coords'] = df[MNI_COLS + T1_COLS].notna().all(axis=1)
     return df
+
+
+def _ar_pairs(row, pair_cols):
+    '''
+    returns the (pct, pct_str, label) anatomical pairs of a row in file order.
+    pair_cols is [pct_col, label_col, pct_col, label_col, ...].
+    pairs without a percentage or with an empty label are skipped.
+    '''
+    pairs = []
+    for pc, lc in zip(pair_cols[0::2], pair_cols[1::2]):
+        p, l = row[pc], row[lc]
+        if isinstance(p, str) and p.strip().endswith('%') and \
+           isinstance(l, str) and l.strip():
+            pairs.append((float(p.strip()[:-1]), p, l.strip()))
+    return pairs
+
+
+def classify_electrodes(df, subj=''):
+    '''
+    sets 'reason' for each row:
+    no_coords, grid_strip, depth_cortex, depth_ctx_unknown,
+    depth_not_cortex or unknown_type.
+    for depth electrodes the label is the first one (by descending
+    percentage) with pct >= CTX_THRESH that is not Unknown or White-Matter.
+    AR_Percentage and T1_AnatomicalRegion are set to that pair; if no
+    label qualifies the original first pair is kept.
+    '''
+    pair_cols = ['AR_Percentage', 'T1_AnatomicalRegion'] + \
+                [c for c in df.columns if c.startswith('AR_') and c != 'AR_Percentage']
+    reason = np.full(len(df), 'unknown_type', dtype=object)
+    for i, row in df.iterrows():
+        if not row['valid_coords']:
+            reason[i] = 'no_coords'
+        elif row['T1_R'] in GRID_STRIP:
+            reason[i] = 'grid_strip'
+        elif row['T1_R'] == DEPTH:
+            pairs = sorted(_ar_pairs(row, pair_cols), key=lambda x: -x[0])
+            pick = next((pr for pr in pairs if pr[0] >= CTX_THRESH and
+                         pr[2] != 'Unknown' and not pr[2].endswith('White-Matter')), None)
+            if pick is None:
+                reason[i] = 'depth_not_cortex'
+                continue
+            df.at[i, 'AR_Percentage'] = pick[1]
+            df.at[i, 'T1_AnatomicalRegion'] = pick[2]
+            if pick[2].startswith('ctx-') and pick[2].endswith('-unknown'):
+                reason[i] = 'depth_ctx_unknown'
+            elif pick[2].startswith('ctx-'):
+                reason[i] = 'depth_cortex'
+            else:
+                reason[i] = 'depth_not_cortex'
+    df['reason'] = reason
+    return df
+
+
+def check_depth_hemisphere(df, subj=''):
+    '''
+    warns when the assigned hemisphere of a depth_cortex electrode
+    differs from the hemisphere in its ctx-{hemi}-* label.
+    '''
+    m = (df['reason'] == 'depth_cortex').to_numpy()
+    ctx_hemi = df.loc[m, 'T1_AnatomicalRegion'].str.split('-').str[1]
+    bad = ctx_hemi != df.loc[m, 'hemi']
+    if bad.any():
+        who = [f'{l} ({h} vs {r})' for l, h, r in
+               zip(df.loc[m, 'labels'][bad], df.loc[m, 'hemi'][bad],
+                   df.loc[m, 'T1_AnatomicalRegion'][bad])]
+        warnings.warn(f'{subj}: depth electrodes with hemisphere different '
+                      f'from their ctx label: {who}')
 
 
 def _majority(hemis):
@@ -150,22 +222,28 @@ def schaefer_network(parcel):
     return parcel.split('_')[2]
 
 
-def process_subject(subj_dir, fs_dir, tol=5.0, out_name='coordinates_atlas.csv'):
+def process_subject(subj_dir, fs_dir, tol=5.0, use_last_valid=False,
+                    out_name='coordinates_fs_atlas.csv'):
     '''
     runs the full mapping for one subject and saves the output
     csv next to the input.
     '''
     subj = os.path.basename(os.path.normpath(subj_dir))
-    df = load_subject(subj_dir)
+    df = load_subject(subj_dir, use_last_valid=use_last_valid)
+    df = classify_electrodes(df, subj=subj)
     df = assign_hemisphere(df, tol=tol, subj=subj)
+    check_depth_hemisphere(df, subj=subj)
     for c in FS_COLS + ['dist_to_pial_mm']:
         df[c] = np.nan
     df['fs_vertex'] = pd.Series(pd.NA, index=df.index, dtype='Int64')
     df['subj_vertex'] = pd.Series(pd.NA, index=df.index, dtype='Int64')
     for col in ATLASES:
         df[col] = pd.Series(np.nan, index=df.index, dtype=object)
+    # cortical depth electrodes in ctx-*-unknown are not mapped
+    df.loc[df['reason'] == 'depth_ctx_unknown', list(ATLASES)] = 'unknown'
+    to_map = df['reason'].isin(MAPPED).to_numpy()
     for hemi in ['lh', 'rh']:
-        m = (df['hemi'] == hemi).to_numpy()
+        m = to_map & (df['hemi'] == hemi).to_numpy()
         if not m.any():
             continue
         fs_locs, fs_ind, subj_ind, dist = map_hemi_to_fsaverage(
@@ -181,8 +259,9 @@ def process_subject(subj_dir, fs_dir, tol=5.0, out_name='coordinates_atlas.csv')
     df = df[OUT_COLS]
     fn_out = os.path.join(subj_dir, out_name)
     df.to_csv(fn_out, index=False)
-    print(f'{subj}: n={len(df)} lh={np.sum(df["hemi"] == "lh")} '
-          f'rh={np.sum(df["hemi"] == "rh")} no_coords={df["hemi"].isna().sum()} '
+    print(f'{subj}: n={len(df)} {df["reason"].value_counts().to_dict()} '
+          f'mapped_lh={np.sum(to_map & (df["hemi"] == "lh"))} '
+          f'mapped_rh={np.sum(to_map & (df["hemi"] == "rh"))} '
           f'unknown_hcp={np.sum(df["HCP_region"] == "unknown")} '
           f'unknown_schaefer={np.sum(df["Schaefer400_17Net"] == "unknown")} -> {fn_out}')
     return df
@@ -195,6 +274,8 @@ if __name__ == '__main__':
     parser.add_argument('--subjects', nargs='*', default=None)
     parser.add_argument('--tol', type=float, default=5.0,
                         help='|MNI_x| (mm) below which the hemisphere is ambiguous')
+    parser.add_argument('--use_last_valid', action='store_true',
+                        help='keep only the first last_valid_electrode.txt rows')
     args = parser.parse_args()
     warnings.simplefilter('always')
     if args.subjects:
@@ -203,4 +284,5 @@ if __name__ == '__main__':
         subj_dirs = sorted(os.path.dirname(p) for p in
                            glob.glob(os.path.join(args.data_dir, '*', 'coordinates.csv')))
     for subj_dir in subj_dirs:
-        process_subject(subj_dir, args.fs_dir, tol=args.tol)
+        process_subject(subj_dir, args.fs_dir, tol=args.tol,
+                        use_last_valid=args.use_last_valid)
